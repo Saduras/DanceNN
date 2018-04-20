@@ -14,7 +14,7 @@ def convert_video_to_frames(source_path, output_path, step_size):
     success = True
     while success:
         # save frame as JPEG file
-        cv2.imwrite("./data/poses/{1}/{0:d}_{1}.jpg".format(frame_index, output_path), image)
+        cv2.imwrite(output_path + "/" + str(frame_index) + ".jpg", image)
         success, image = vidcap.read()
         print('Read a new frame: {0} {1}'.format(frame_index, success))
         frame_index += step_size
