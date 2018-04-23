@@ -2,3 +2,6 @@
 .vscode/
 __pycache__/
 /data
+/pose-tensorflow/models/mpii/mpii-single-resnet-101.data-00000-of-00001
+/pose-tensorflow/models/mpii/mpii-single-resnet-101.index
+/pose-tensorflow/models/mpii/mpii-single-resnet-101.meta
