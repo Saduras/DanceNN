@@ -10,24 +10,25 @@ from nnet import predict
 from util import visualize
 from dataset.pose_dataset import data_to_input
 
-def detect_pose(image_path):
+def detect_pose(image_paths):
     cfg = load_config("./pose_cfg.yaml")
 
     # Load and setup CNN part detector
     sess, inputs, outputs = predict.setup_pose_prediction(cfg)
 
-    # Read image from file
-    image = imread(image_path, mode='RGB')
+    poses = []
+    for image_path in image_paths:
+        # Read image from file
+        image = imread(image_path, mode='RGB')
 
-    image_batch = data_to_input(image)
+        image_batch = data_to_input(image)
 
-    # Compute prediction with the CNN
-    outputs_np = sess.run(outputs, feed_dict={inputs: image_batch})
-    scmap, locref, _ = predict.extract_cnn_output(outputs_np, cfg)
+        # Compute prediction with the CNN
+        outputs_np = sess.run(outputs, feed_dict={inputs: image_batch})
+        scmap, locref, _ = predict.extract_cnn_output(outputs_np, cfg)
 
-    # Extract maximum scoring location from the heatmap, assume 1 person
-    pose = predict.argmax_pose_predict(scmap, locref, cfg.stride)
+        # Extract maximum scoring location from the heatmap, assume 1 person
+        pose = predict.argmax_pose_predict(scmap, locref, cfg.stride)
+        poses.append(pose)
 
-    # Visualise
-    visualize.show_heatmaps(cfg, image, scmap, pose)
-    visualize.waitforbuttonpress()
+    return poses, cfg
