@@ -13,6 +13,27 @@ from nnet import predict
 from util import visualize
 from dataset.pose_dataset import data_to_input
 
+def predict_frame(video, t):
+    frame_count = int(video.fps * video.duration)
+    frame_length = 1 / video.fps
+
+    # Load and setup CNN part detector
+    cfg = load_config('./pose_cfg.yaml')
+    sess, inputs, outputs = predict.setup_pose_prediction(cfg)
+
+    frame = video.get_frame(t)
+
+    image_batch = data_to_input(frame)
+
+    # Compute prediction with the CNN
+    outputs_np = sess.run(outputs, feed_dict={inputs: image_batch})
+    scmap, locref, _ = predict.extract_cnn_output(outputs_np, cfg)
+
+    # Extract maximum scoring location from the heatmap, assume 1 person
+    pose = predict.argmax_pose_predict(scmap, locref, cfg.stride)
+
+    return pose
+
 def preprocess(video_name):
     source_path = f'./data/video/{video_name}.mp4'
 
