@@ -92,8 +92,9 @@ def save_poses(poses, times, cfg, output_path):
     for j in range(len(cfg.all_joints)):
         prefix = cfg.all_joints_names[j]
         for i in range(len(cfg.all_joints[j])):
-            dict[prefix + '_' + str(i) + '_x'] = poses[:,j,0]
-            dict[prefix + '_' + str(i) + '_y'] = poses[:,j,1]
+            idx = cfg.all_joints[j][i]
+            dict[prefix + '_' + str(i) + '_x'] = poses[:,idx,0]
+            dict[prefix + '_' + str(i) + '_y'] = poses[:,idx,1]
     df = pd.DataFrame(data = dict)
     df.to_csv(output_path, index=False)
 
