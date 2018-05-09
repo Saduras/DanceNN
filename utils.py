@@ -89,13 +89,21 @@ def preprocess(video_name):
 def save_poses(poses, times, cfg, output_path):
     dict = {}
     dict['time'] = times
+    cols = []
     for j in range(len(cfg.all_joints)):
         prefix = cfg.all_joints_names[j]
         for i in range(len(cfg.all_joints[j])):
             idx = cfg.all_joints[j][i]
-            dict[prefix + '_' + str(i) + '_x'] = poses[:,idx,0]
-            dict[prefix + '_' + str(i) + '_y'] = poses[:,idx,1]
-    df = pd.DataFrame(data = dict)
+            
+            label_x = prefix + '_' + str(i) + '_x'
+            dict[label_x] = poses[:,idx,0]
+            cols.append(label_x)
+
+            label_y = prefix + '_' + str(i) + '_y'
+            dict[label_y] = poses[:,idx,1]
+            cols.append(label_y)
+
+    df = pd.DataFrame(data = dict, columns = cols)
     df.to_csv(output_path, index=False)
 
 
