@@ -34,7 +34,7 @@ def predict_frame(video, t):
 
     return pose
 
-def preprocess(video_name):
+def preprocess(video_name, duration):
     source_path = f'./data/video/{video_name}.mp4'
 
     csv_base_path = './data/poses/'
@@ -50,7 +50,7 @@ def preprocess(video_name):
     start_time = time.time()
 
     video = mpe.VideoFileClip(source_path)
-    frame_count = int(video.fps * video.duration)
+    frame_count = int(video.fps * duration)
     frame_length = 1 / video.fps
     print(f'video length: {video.duration}s fps: {video.fps} frame count: {frame_count}')
 
@@ -89,7 +89,7 @@ def preprocess(video_name):
 def save_poses(poses, times, cfg, output_path):
     dict = {}
     dict['time'] = times
-    cols = []
+    cols = ['time']
     for j in range(len(cfg.all_joints)):
         prefix = cfg.all_joints_names[j]
         for i in range(len(cfg.all_joints[j])):
