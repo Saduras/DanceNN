@@ -80,7 +80,7 @@ def preprocess(video_name, duration):
         times.append(t)
 
         if i % 100 == 0:
-            print(f'processed frame: {i}/{frame_count} elapsed time: {time.time() - start_time}')
+            print(f'processed frame: {i}/{frame_count} elapsed time: {time.time() - start_time}', end='\r')
 
     sess.close()
     print(f'saving poses at {csv_path}')
