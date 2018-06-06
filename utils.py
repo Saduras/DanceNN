@@ -1,6 +1,6 @@
 import os
 import sys
-import time
+from datetime import datetime
 import cv2
 
 import numpy as np
@@ -47,7 +47,7 @@ def preprocess(video_name, duration):
         os.makedirs(audio_base_path)
     audio_path = f'{audio_base_path}{video_name}.mp3'
 
-    start_time = time.time()
+    start_time = datetime.now()
 
     video = mpe.VideoFileClip(source_path)
     if duration < 0:
@@ -80,14 +80,14 @@ def preprocess(video_name, duration):
         times.append(t)
 
         if i % 100 == 0:
-            print(f'processed frame: {i}/{frame_count} elapsed time: {time.time() - start_time}', end='\r')
+            print(f'processed frame: {i}/{frame_count} elapsed time: {datetime.now() - start_time}', end='\r')
 
     sess.close()
     print(f'saving poses at {csv_path}')
     save_poses(np.array(poses), times, cfg, csv_path)
     print(f'saving audio at {audio_path}')
     video.audio.write_audiofile(audio_path)
-    print(f'total time: {time.time() - start_time}')
+    print(f'total time: {datetime.now() - start_time}')
 
 def save_poses(poses, times, cfg, output_path):
     dict = {}
