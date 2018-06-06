@@ -50,6 +50,9 @@ def preprocess(video_name, duration):
     start_time = time.time()
 
     video = mpe.VideoFileClip(source_path)
+    if duration < 0:
+        duration = video.duration
+
     frame_count = int(video.fps * duration)
     frame_length = 1 / video.fps
     print(f'video length: {video.duration}s fps: {video.fps} frame count: {frame_count}')
